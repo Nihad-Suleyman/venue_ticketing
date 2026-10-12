@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Explore the Aurora Hall seating sections and plan your ticket selection.">
+  <title>Aurora Hall | Ticket Selection</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="brand"><span class="brand-icon" aria-hidden="true">✦</span><span>AURORA <strong>HALL</strong></span></div>
+    <nav aria-label="Main navigation"><a href="#venue">Venue</a><a href="#sections">Sections</a><a href="#about">About</a></nav>
+    <span class="header-label">INTERACTIVE TICKETING</span>
+  </header>
+
+  <main>
+    <section class="hero" aria-labelledby="page-title">
+      <p class="eyebrow">LIVE EVENTS · PREMIUM EXPERIENCE</p>
+      <h1 id="page-title">Find your perfect seat.</h1>
+      <p class="hero-description">Explore Aurora Hall's seating sections. Select a section to learn about its location and ticket price.</p>
+    </section>
+
+    <div class="app-layout" id="venue">
+      <section class="panel venue-panel" aria-labelledby="map-title">
+        <div class="panel-heading">
+          <div><p class="eyebrow">VENUE OVERVIEW</p><h2 id="map-title">Aurora Hall</h2></div>
+          <span class="pill">Concert auditorium</span>
+        </div>
+        <div class="venue-frame">
+          <div class="stage"><span>✦ &nbsp; MAIN STAGE &nbsp; ✦</span></div>
+          <p class="map-hint">Seating map will appear here as the project develops.</p>
+          <div class="zone-preview" aria-label="Planned seating zones">
+            <div class="zone zone-vip"><strong>VIP</strong><span>Closest to stage</span></div>
+            <div class="zone zone-premium"><strong>PREMIUM</strong><span>Middle rows</span></div>
+            <div class="zone zone-standard"><strong>STANDARD</strong><span>Rear rows</span></div>
+          </div>
+        </div>
+        <div class="legend" aria-label="Price categories"><span><i class="dot vip"></i> VIP</span><span><i class="dot premium"></i> Premium</span><span><i class="dot standard"></i> Standard</span></div>
+      </section>
+
+      <aside class="panel info-panel" aria-labelledby="info-title">
+        <p class="eyebrow">YOUR EXPERIENCE</p>
+        <h2 id="info-title">Ticket details</h2>
+        <p class="muted">Seat inspection and shopping cart functionality will be added in upcoming development stages.</p>
+        <div class="summary-row"><span>Selected seats</span><strong id="selected-count">0</strong></div>
+        <div class="summary-row"><span>Total</span><strong id="total-price">0 AZN</strong></div>
+        <button type="button" class="primary-button" disabled>ADD TO CART</button>
+        <p class="small-note">Select a seat before adding it to your cart.</p>
+      </aside>
+    </div>
+
+    <section class="section-overview" id="sections" aria-labelledby="sections-title">
+      <p class="eyebrow">PRICING</p><h2 id="sections-title">Choose your experience</h2>
+      <div class="price-grid">
+        <article class="price-card"><div class="price-accent vip-bg"></div><p class="eyebrow">FRONT ROWS</p><h3>VIP</h3><p>Closest view of the stage.</p><strong>120 AZN</strong></article>
+        <article class="price-card"><div class="price-accent premium-bg"></div><p class="eyebrow">MIDDLE ROWS</p><h3>Premium</h3><p>Excellent central view.</p><strong>80 AZN</strong></article>
+        <article class="price-card"><div class="price-accent standard-bg"></div><p class="eyebrow">REAR ROWS</p><h3>Standard</h3><p>Great value and comfort.</p><strong>45 AZN</strong></article>
+      </div>
+    </section>
+  </main>
+  <footer id="about"><p>© 2026 Aurora Hall · Web &amp; Mobile I Student Project</p><p>Built with HTML, CSS &amp; JavaScript</p></footer>
+</body>
+</html>
