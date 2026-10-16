@@ -19,7 +19,7 @@
     <section class="hero" aria-labelledby="page-title">
       <p class="eyebrow">LIVE EVENTS · PREMIUM EXPERIENCE</p>
       <h1 id="page-title">Find your perfect seat.</h1>
-      <p class="hero-description">Explore Aurora Hall's seating sections. Select a section to learn about its location and ticket price.</p>
+      <p class="hero-description">Explore Aurora Hall's seating sections. Choose a seat on the map to inspect its location and price.</p>
     </section>
 
     <div class="app-layout" id="venue">
@@ -30,14 +30,14 @@
         </div>
         <div class="venue-frame">
           <div class="stage"><span>✦ &nbsp; MAIN STAGE &nbsp; ✦</span></div>
-          <p class="map-hint">Seating map will appear here as the project develops.</p>
-          <div class="zone-preview" aria-label="Planned seating zones">
-            <div class="zone zone-vip"><strong>VIP</strong><span>Closest to stage</span></div>
-            <div class="zone zone-premium"><strong>PREMIUM</strong><span>Middle rows</span></div>
-            <div class="zone zone-standard"><strong>STANDARD</strong><span>Rear rows</span></div>
+          <p class="map-hint">Select an available seat. Grey seats are unavailable.</p>
+          <div class="map-viewport" id="map-viewport" aria-label="Venue seating layout">
+            <div class="map-canvas" id="map-canvas">
+              <div class="seat-map" id="seat-map"></div>
+            </div>
           </div>
         </div>
-        <div class="legend" aria-label="Price categories"><span><i class="dot vip"></i> VIP</span><span><i class="dot premium"></i> Premium</span><span><i class="dot standard"></i> Standard</span></div>
+        <div class="legend" aria-label="Price categories"><span><i class="dot vip"></i> VIP</span><span><i class="dot premium"></i> Premium</span><span><i class="dot standard"></i> Standard</span><span><i class="dot unavailable"></i> Unavailable</span></div>
       </section>
 
       <aside class="panel info-panel" aria-labelledby="info-title">
