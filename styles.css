@@ -80,3 +80,12 @@ footer { max-width: 1400px; border-top: 1px solid var(--line); color: var(--mute
 .seat:not(:disabled):hover, .seat:focus-visible { outline: 2px solid white; outline-offset: 2px; }
 .unavailable { background: #4a5469; }
 @media (max-width: 600px) { .map-viewport { min-height: 490px; } }
+
+.seat-inspected:not(:disabled) { outline: 3px solid #fff; outline-offset: 2px; box-shadow: 0 0 0 5px #090e1d; }
+
+.seat-in-cart:not(:disabled) { background: #91d3a3; color: #0b2515; }
+.cart-heading { font-size: 1rem; margin: 18px 0 8px; }
+.cart-items { margin: 0; padding: 0; list-style: none; max-height: 220px; overflow: auto; }
+.cart-items li { border-bottom: 1px solid var(--line); padding: 9px 0; display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: .82rem; }
+.remove-button { border: 1px solid var(--line); background: var(--surface-raised); color: var(--text); border-radius: 6px; padding: 5px 8px; cursor: pointer; }
+.remove-button:hover, .remove-button:focus-visible { border-color: var(--accent); }

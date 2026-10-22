@@ -2,9 +2,9 @@
 
 Web & Mobile I | HTML, CSS, JavaScript
 
-## Current stage: 2 of 6
+## Current stage: 4 of 6
 
-Seat buttons generated from 218 JavaScript records; each seat has a unique label, price and unavailable state.
+Add to cart is explicit, prevents duplicates, supports removal, recalculates total and updates seat states.
 
 ## Venue
 
@@ -23,4 +23,4 @@ Clicking a seat is for inspection only; the cart changes only when Add to cart i
 
 ## Development record
 
-Milestone 2: Generate seating map from JavaScript venue data.
+Milestone 4: Add ticket cart with removal and duplicate protection.

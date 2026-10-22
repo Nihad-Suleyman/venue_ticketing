@@ -72,3 +72,88 @@ function renderSeats() {
 }
 
 renderSeats();
+
+// Inspection is separate from purchase: clicking a seat never adds a ticket.
+let inspectedId = null;
+const inspectionContent = document.getElementById("inspection-content");
+const addButton = document.getElementById("add-to-cart");
+const statusText = document.getElementById("status-text");
+
+function findSeat(id) {
+  return seats.find(seat => seat.id === id);
+}
+
+function inspectSeat(id) {
+  const seat = findSeat(id);
+  if (!seat || seat.unavailable) return;
+  inspectedId = id;
+  updateSeatAppearance();
+  inspectionContent.textContent = `${seat.section} · Row ${seat.row}, Seat ${seat.number} · ${seat.price} AZN`;
+  addButton.disabled = cart.includes(id);
+  statusText.textContent = `Inspecting ${seat.id}. Use Add to cart to reserve it.`;
+}
+
+function updateSeatAppearance() {
+  for (const id in seatButtons) {
+    const button = seatButtons[id];
+    button.classList.toggle("seat-inspected", id === inspectedId);
+    button.classList.toggle("seat-in-cart", cart.includes(id));
+  }
+}
+
+seatMap.addEventListener("click", event => {
+  const button = event.target.closest("button[data-id]");
+  if (button) inspectSeat(button.dataset.id);
+});
+
+// The cart contains only seat IDs. Seat details always come from the venue model.
+let cart = [];
+const cartItems = document.getElementById("cart-items");
+const selectedCount = document.getElementById("selected-count");
+const totalPrice = document.getElementById("total-price");
+
+function renderCart() {
+  cartItems.replaceChildren();
+  for (const id of cart) {
+    const seat = findSeat(id);
+    if (!seat) continue;
+    const item = document.createElement("li");
+    const description = document.createElement("span");
+    description.textContent = `${seat.id} · ${seat.section} · ${seat.price} AZN`;
+    const remove = document.createElement("button");
+    remove.type = "button";
+    remove.className = "remove-button";
+    remove.textContent = "Remove";
+    remove.dataset.removeId = id;
+    remove.setAttribute("aria-label", `Remove seat ${id} from cart`);
+    item.append(description, remove);
+    cartItems.append(item);
+  }
+  selectedCount.textContent = String(cart.length);
+  totalPrice.textContent = `${cart.reduce((total, id) => total + findSeat(id).price, 0)} AZN`;
+  updateSeatAppearance();
+  if (inspectedId) addButton.disabled = cart.includes(inspectedId);
+}
+
+addButton.addEventListener("click", () => {
+  const seat = findSeat(inspectedId);
+  if (!seat || seat.unavailable || cart.includes(seat.id)) return;
+  cart.push(seat.id);
+  statusText.textContent = `${seat.id} added to your cart.`;
+  renderCart();
+});
+
+cartItems.addEventListener("click", event => {
+  const button = event.target.closest("button[data-remove-id]");
+  if (!button) return;
+  cart = cart.filter(id => id !== button.dataset.removeId);
+  statusText.textContent = `${button.dataset.removeId} removed from your cart.`;
+  renderCart();
+});
+
+// Override the inspection display to include cart-specific behavior.
+function updateInspectionButton() {
+  addButton.disabled = !inspectedId || cart.includes(inspectedId);
+}
+
+renderCart();

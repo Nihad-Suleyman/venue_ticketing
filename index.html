@@ -43,11 +43,14 @@
       <aside class="panel info-panel" aria-labelledby="info-title">
         <p class="eyebrow">YOUR EXPERIENCE</p>
         <h2 id="info-title">Ticket details</h2>
-        <p class="muted">Seat inspection and shopping cart functionality will be added in upcoming development stages.</p>
+        <p class="muted" id="inspection-content">Click a seat to inspect its section, row and price.</p>
+        <p class="small-note" id="status-text" role="status" aria-live="polite">No seat selected.</p>
+        <h3 class="cart-heading">Your cart</h3>
+        <ul class="cart-items" id="cart-items" aria-label="Tickets in cart"></ul>
         <div class="summary-row"><span>Selected seats</span><strong id="selected-count">0</strong></div>
         <div class="summary-row"><span>Total</span><strong id="total-price">0 AZN</strong></div>
-        <button type="button" class="primary-button" disabled>ADD TO CART</button>
-        <p class="small-note">Select a seat before adding it to your cart.</p>
+        <button type="button" class="primary-button" id="add-to-cart" disabled>ADD TO CART</button>
+        <p class="small-note">This is a ticket-selection demo. No payment is taken.</p>
       </aside>
     </div>
 
