@@ -133,6 +133,7 @@ function renderCart() {
   totalPrice.textContent = `${cart.reduce((total, id) => total + findSeat(id).price, 0)} AZN`;
   updateSeatAppearance();
   if (inspectedId) addButton.disabled = cart.includes(inspectedId);
+  saveCart();
 }
 
 addButton.addEventListener("click", () => {
@@ -156,4 +157,71 @@ function updateInspectionButton() {
   addButton.disabled = !inspectedId || cart.includes(inspectedId);
 }
 
-renderCart();
+
+// Persist only stable IDs, not a second copy of seat prices or availability.
+const STORAGE_KEY = "aurora-hall-cart-v1";
+
+function saveCart() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(cart));
+  } catch (error) {
+    console.warn("Cart could not be saved:", error);
+  }
+}
+
+function restoreCart() {
+  try {
+    const stored = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+    if (!Array.isArray(stored)) return;
+    cart = stored.filter((id, index) => stored.indexOf(id) === index).filter(id => {
+      const seat = findSeat(id);
+      return seat && !seat.unavailable;
+    });
+  } catch (error) {
+    cart = [];
+    console.warn("Saved cart was invalid:", error);
+  }
+  renderCart();
+}
+
+// Navigation controls translate and scale the same map element.
+const mapCanvas = document.getElementById("map-canvas");
+let zoom = 1;
+let offsetX = 0;
+let offsetY = 0;
+
+function updateMapView() {
+  mapCanvas.style.transform = `translate(${offsetX}px, ${offsetY}px) scale(${zoom})`;
+  document.getElementById("zoom-label").textContent = `${Math.round(zoom * 100)}%`;
+}
+
+function changeZoom(amount) {
+  zoom = Math.max(0.7, Math.min(1.8, Math.round((zoom + amount) * 10) / 10));
+  updateMapView();
+}
+
+function moveMap(x, y) {
+  offsetX = Math.max(-280, Math.min(280, offsetX + x));
+  offsetY = Math.max(-280, Math.min(280, offsetY + y));
+  updateMapView();
+}
+
+function resetMap() {
+  zoom = 1;
+  offsetX = 0;
+  offsetY = 0;
+  updateMapView();
+}
+
+document.getElementById("zoom-in").addEventListener("click", () => changeZoom(0.1));
+document.getElementById("zoom-out").addEventListener("click", () => changeZoom(-0.1));
+document.getElementById("move-up").addEventListener("click", () => moveMap(0, 35));
+document.getElementById("move-down").addEventListener("click", () => moveMap(0, -35));
+document.getElementById("move-left").addEventListener("click", () => moveMap(35, 0));
+document.getElementById("move-right").addEventListener("click", () => moveMap(-35, 0));
+document.getElementById("reset-view").addEventListener("click", resetMap);
+
+// Store changes after cart actions. Using a single render pathway keeps the
+// cart, seat colors and storage in sync.
+restoreCart();
+updateMapView();

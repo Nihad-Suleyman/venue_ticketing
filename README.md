@@ -2,9 +2,9 @@
 
 Web & Mobile I | HTML, CSS, JavaScript
 
-## Current stage: 4 of 6
+## Current stage: 5 of 6
 
-Add to cart is explicit, prevents duplicates, supports removal, recalculates total and updates seat states.
+Cart restores after reload; zoom, four directions and reset buttons move the generated map.
 
 ## Venue
 
@@ -23,4 +23,4 @@ Clicking a seat is for inspection only; the cart changes only when Add to cart i
 
 ## Development record
 
-Milestone 4: Add ticket cart with removal and duplicate protection.
+Milestone 5: Persist cart and implement map navigation controls.

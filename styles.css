@@ -89,3 +89,9 @@ footer { max-width: 1400px; border-top: 1px solid var(--line); color: var(--mute
 .cart-items li { border-bottom: 1px solid var(--line); padding: 9px 0; display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: .82rem; }
 .remove-button { border: 1px solid var(--line); background: var(--surface-raised); color: var(--text); border-radius: 6px; padding: 5px 8px; cursor: pointer; }
 .remove-button:hover, .remove-button:focus-visible { border-color: var(--accent); }
+
+.map-tools { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 14px; align-items: center; }
+.map-tools button { background: var(--surface-raised); border: 1px solid var(--line); color: var(--text); border-radius: 7px; padding: 6px 10px; cursor: pointer; }
+.map-tools button:hover, .map-tools button:focus-visible { border-color: var(--accent); }
+.zoom-label { min-width: 45px; text-align: center; font-size: .78rem; color: var(--muted); }
+.map-canvas { transition: transform .12s ease-out; }
