@@ -1,26 +1,20 @@
 # Aurora Hall — Interactive Venue Ticketing
 
-Web & Mobile I | HTML, CSS, JavaScript
-
-## Current stage: 5 of 6
-
-Cart restores after reload; zoom, four directions and reset buttons move the generated map.
-
-## Venue
-
-- VIP: 3 rows × 12 seats, 120 AZN
-- Premium: 5 rows × 14 seats, 80 AZN
-- Standard: 7 rows × 16 seats, 45 AZN
-- Total: 218 seats, with a small set marked unavailable
+Web & Mobile I student project built with HTML, CSS and JavaScript.
 
 ## Run
 
-Open `index.html` in a browser, or use VS Code Live Server. No build tools or external packages.
+Open `index.html` in a browser (or use VS Code Live Server).
 
-## Interaction rule
+## Features
 
-Clicking a seat is for inspection only; the cart changes only when Add to cart is pressed.
+- 218 seats generated from a JavaScript venue model across VIP, Premium and Standard sections.
+- Seat inspection and distinct available, inspected, in-cart and unavailable states.
+- Add to cart and remove actions with duplicate prevention and price totals.
+- Cart state is saved in `localStorage` and restored after a refresh.
+- Zoom in, zoom out, move in four directions, and reset/center using visible buttons.
+- Responsive page layout using Flexbox, CSS Grid and media queries.
 
-## Development record
+Only the browser is needed. There is no backend, authentication or payment processing.
 
-Milestone 5: Persist cart and implement map navigation controls.
+Mouse-wheel zoom and dragging are not included; these are optional bonus features.

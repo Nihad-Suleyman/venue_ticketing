@@ -15,7 +15,8 @@ function createSeats() {
   let rowIndex = 0;
   for (const section of venue.sections) {
     for (let row = 1; row <= section.rows; row++) {
-      const rowLabel = String.fromCharCode(65 + rowIndex);
+      const rowLetters = "ABCDEFGHIJKLMNO";
+      const rowLabel = rowLetters[rowIndex];
       for (let number = 1; number <= section.seatsPerRow; number++) {
         const id = `${rowLabel}${number}`;
         seats.push({
@@ -38,8 +39,7 @@ const seatMap = document.getElementById("seat-map");
 const seatButtons = {};
 
 function renderSeats() {
-  seatMap.replaceChildren();
-  for (const id in seatButtons) delete seatButtons[id];
+  seatMap.textContent = "";
   let previousRow = "";
   let rowElement;
   for (const seat of seats) {
@@ -49,8 +49,8 @@ function renderSeats() {
       const label = document.createElement("span");
       label.className = "row-label";
       label.textContent = seat.row;
-      rowElement.append(label);
-      seatMap.append(rowElement);
+      rowElement.appendChild(label);
+      seatMap.appendChild(rowElement);
       previousRow = seat.row;
     }
     const button = document.createElement("button");
@@ -59,15 +59,18 @@ function renderSeats() {
     button.textContent = seat.number;
     button.title = `${seat.section}, row ${seat.row}, seat ${seat.number} — ${seat.price} AZN`;
     button.setAttribute("aria-label", button.title);
-    button.dataset.id = seat.id;
+    button.setAttribute("data-seat-id", seat.id);
     if (seat.unavailable) {
       button.disabled = true;
       button.classList.add("seat-unavailable");
       button.title += " (unavailable)";
       button.setAttribute("aria-label", button.title);
     }
-    rowElement.append(button);
+    rowElement.appendChild(button);
     seatButtons[seat.id] = button;
+    button.addEventListener("click", function() {
+      inspectSeat(seat.id);
+    });
   }
 }
 
@@ -96,15 +99,15 @@ function inspectSeat(id) {
 function updateSeatAppearance() {
   for (const id in seatButtons) {
     const button = seatButtons[id];
-    button.classList.toggle("seat-inspected", id === inspectedId);
-    button.classList.toggle("seat-in-cart", cart.includes(id));
+    button.classList.remove("seat-inspected");
+    button.classList.remove("seat-in-cart");
+    if (id === inspectedId) button.classList.add("seat-inspected");
+    if (cart.includes(id)) button.classList.add("seat-in-cart");
   }
 }
 
-seatMap.addEventListener("click", event => {
-  const button = event.target.closest("button[data-id]");
-  if (button) inspectSeat(button.dataset.id);
-});
+// Every seat receives its own click handler when it is created.
+// See renderSeats() above.
 
 // The cart contains only seat IDs. Seat details always come from the venue model.
 let cart = [];
@@ -113,7 +116,7 @@ const selectedCount = document.getElementById("selected-count");
 const totalPrice = document.getElementById("total-price");
 
 function renderCart() {
-  cartItems.replaceChildren();
+  cartItems.textContent = "";
   for (const id of cart) {
     const seat = findSeat(id);
     if (!seat) continue;
@@ -124,13 +127,24 @@ function renderCart() {
     remove.type = "button";
     remove.className = "remove-button";
     remove.textContent = "Remove";
-    remove.dataset.removeId = id;
+    remove.setAttribute("data-remove-id", id);
     remove.setAttribute("aria-label", `Remove seat ${id} from cart`);
-    item.append(description, remove);
-    cartItems.append(item);
+    item.appendChild(description);
+    item.appendChild(remove);
+    remove.addEventListener("click", function() {
+      cart = cart.filter(seatId => seatId !== id);
+      statusText.textContent = `${id} removed from your cart.`;
+      renderCart();
+    });
+    cartItems.appendChild(item);
   }
   selectedCount.textContent = String(cart.length);
-  totalPrice.textContent = `${cart.reduce((total, id) => total + findSeat(id).price, 0)} AZN`;
+  let total = 0;
+  for (const id of cart) {
+    const seat = findSeat(id);
+    if (seat) total += seat.price;
+  }
+  totalPrice.textContent = `${total} AZN`;
   updateSeatAppearance();
   if (inspectedId) addButton.disabled = cart.includes(inspectedId);
   saveCart();
@@ -144,18 +158,7 @@ addButton.addEventListener("click", () => {
   renderCart();
 });
 
-cartItems.addEventListener("click", event => {
-  const button = event.target.closest("button[data-remove-id]");
-  if (!button) return;
-  cart = cart.filter(id => id !== button.dataset.removeId);
-  statusText.textContent = `${button.dataset.removeId} removed from your cart.`;
-  renderCart();
-});
 
-// Override the inspection display to include cart-specific behavior.
-function updateInspectionButton() {
-  addButton.disabled = !inspectedId || cart.includes(inspectedId);
-}
 
 
 // Persist only stable IDs, not a second copy of seat prices or availability.
@@ -173,10 +176,13 @@ function restoreCart() {
   try {
     const stored = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
     if (!Array.isArray(stored)) return;
-    cart = stored.filter((id, index) => stored.indexOf(id) === index).filter(id => {
+    cart = [];
+    for (const id of stored) {
       const seat = findSeat(id);
-      return seat && !seat.unavailable;
-    });
+      if (seat && !seat.unavailable && !cart.includes(id)) {
+        cart.push(id);
+      }
+    }
   } catch (error) {
     cart = [];
     console.warn("Saved cart was invalid:", error);
@@ -225,3 +231,4 @@ document.getElementById("reset-view").addEventListener("click", resetMap);
 // cart, seat colors and storage in sync.
 restoreCart();
 updateMapView();
+
