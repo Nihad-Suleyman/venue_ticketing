@@ -227,6 +227,59 @@ document.getElementById("move-left").addEventListener("click", () => moveMap(35,
 document.getElementById("move-right").addEventListener("click", () => moveMap(-35, 0));
 document.getElementById("reset-view").addEventListener("click", resetMap);
 
+// Bonus: mouse-wheel zoom and click-and-drag navigation. These use the
+// same zoom and position variables as the required navigation buttons.
+const mapViewport = document.getElementById("map-viewport");
+
+mapViewport.addEventListener("wheel", function(event) {
+  event.preventDefault();
+  if (event.deltaY < 0) {
+    changeZoom(0.1);
+  } else if (event.deltaY > 0) {
+    changeZoom(-0.1);
+  }
+}, { passive: false });
+
+let isDragging = false;
+let lastMouseX = 0;
+let lastMouseY = 0;
+let dragged = false;
+
+mapViewport.addEventListener("mousedown", function(event) {
+  if (event.button !== 0) return;
+  isDragging = true;
+  dragged = false;
+  lastMouseX = event.clientX;
+  lastMouseY = event.clientY;
+  mapViewport.classList.add("dragging");
+});
+
+window.addEventListener("mousemove", function(event) {
+  if (!isDragging) return;
+  const movementX = event.clientX - lastMouseX;
+  const movementY = event.clientY - lastMouseY;
+  if (movementX !== 0 || movementY !== 0) {
+    dragged = true;
+    moveMap(movementX, movementY);
+  }
+  lastMouseX = event.clientX;
+  lastMouseY = event.clientY;
+});
+
+window.addEventListener("mouseup", function() {
+  isDragging = false;
+  mapViewport.classList.remove("dragging");
+});
+
+// If the pointer was dragged over a seat, don't also inspect that seat.
+mapViewport.addEventListener("click", function(event) {
+  if (dragged) {
+    event.preventDefault();
+    event.stopPropagation();
+    dragged = false;
+  }
+}, true);
+
 // Store changes after cart actions. Using a single render pathway keeps the
 // cart, seat colors and storage in sync.
 restoreCart();

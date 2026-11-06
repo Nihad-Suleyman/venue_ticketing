@@ -92,3 +92,7 @@ footer { max-width: 1400px; border-top: 1px solid #2a3650; color: #98a7c1; font-
 
 
 @media (max-width: 600px) { .hero h1 { font-size: 2.2rem; } }
+
+/* Mouse navigation bonus */
+.map-viewport { cursor: grab; }
+.map-viewport.dragging { cursor: grabbing; user-select: none; }

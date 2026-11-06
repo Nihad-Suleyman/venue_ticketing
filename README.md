@@ -17,4 +17,4 @@ Open `index.html` in a browser (or use VS Code Live Server).
 
 Only the browser is needed. There is no backend, authentication or payment processing.
 
-Mouse-wheel zoom and dragging are not included; these are optional bonus features.
+Bonus mouse navigation: use the mouse wheel to zoom the seating map, or click and drag to pan. All seven required navigation buttons remain available.
